@@ -13,7 +13,7 @@ type Websites = {
     latency: number;
   }[];
 };
-const useWebsites = async () => {
+const useWebsites = () => {
   const { getToken } = useAuth();
   const [websites, setWebsites] = useState<Websites[]>([]);
 
@@ -40,7 +40,7 @@ const useWebsites = async () => {
     return () => clearInterval(interval);
   }, []);
 
-  return websites;
+  return { websites, refreshWebsites };
 };
 
 export default useWebsites;

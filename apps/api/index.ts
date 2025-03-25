@@ -1,8 +1,10 @@
 import express, { type Request, type Response } from "express";
 import { prisma } from "@repo/db";
 import { authMiddleware } from "./middleware";
+import cors from "cors";
 
 const app = express();
+app.use(cors());
 app.use(express.json());
 
 app.post(
@@ -57,5 +59,5 @@ app.get("/api/v1/websites", async (req, res) => {
 });
 
 app.listen(8081, () => {
-  console.log("Listening to port: 3001");
+  console.log("Listening to port: 8081");
 });

@@ -6,8 +6,8 @@ export const authMiddleware = (
   res: Response,
   next: NextFunction
 ) => {
-  console.log("hit middleware");
-  req.userId = "1"; // hardcoded for now, will be fetched from clerk
+  const clerkToken = req.headers.authorization
+  req.userId = clerkToken!; // hardcoded for now, will be fetched from clerk
   next();
 };
 
