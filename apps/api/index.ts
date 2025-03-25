@@ -46,6 +46,9 @@ app.get("/api/v1/websites", async (req, res) => {
     where: {
       userId: userId,
     },
+    include: {
+      ticks: true,
+    },
   });
 
   res.json({
@@ -53,6 +56,6 @@ app.get("/api/v1/websites", async (req, res) => {
   });
 });
 
-app.listen(3001, () => {
+app.listen(8081, () => {
   console.log("Listening to port: 3001");
 });
