@@ -6,7 +6,6 @@
   "scripts": {
     "dev": "bun --hot run index.ts"
   },
-
   "devDependencies": {
     "@types/bun": "latest"
   },
@@ -15,7 +14,9 @@
   },
   "dependencies": {
     "@repo/db": "*",
+    "@types/cors": "^2.8.17",
     "@types/express": "^5.0.1",
+    "cors": "^2.8.5",
     "express": "^4.21.2"
   }
 }

@@ -1,73 +1,84 @@
-import React, { useState } from "react";
-import { ChevronDown, ChevronUp, Globe } from "lucide-react";
-import { clsx } from "clsx";
+import { useState } from "react";
+import { ChevronDown, ChevronUp } from "lucide-react";
+export type UptimeStatus = "good" | "bad" | "unknown";
 
-export interface Website {
+function StatusCircle({ status }: { status: UptimeStatus }) {
+  return (
+    <div
+      className={`w-3 h-3 rounded-full ${status === "good" ? "bg-green-500" : status === "bad" ? "bg-red-500" : "bg-gray-500"}`}
+    />
+  );
+}
+
+function UptimeTicks({ ticks }: { ticks: UptimeStatus[] }) {
+  return (
+    <div className="flex gap-1 mt-2">
+      {ticks.map((tick, index) => (
+        <div
+          key={index}
+          className={`w-8 h-2 rounded ${
+            tick === "good"
+              ? "bg-green-500"
+              : tick === "bad"
+                ? "bg-red-500"
+                : "bg-gray-500"
+          }`}
+        />
+      ))}
+    </div>
+  );
+}
+interface ProcessedWebsite {
   id: string;
-  name: string;
   url: string;
-  status: "up" | "down";
-  uptimeHistory: ("up" | "down")[];
+  status: UptimeStatus;
+  uptimePercentage: number;
+  lastChecked: string;
+  uptimeTicks: UptimeStatus[];
 }
 
-interface WebsiteCardProps {
-  website: Website;
-}
-
-export const WebsiteCard: React.FC<WebsiteCardProps> = ({ website }) => {
+export default function WebsiteCard({ website }: { website: ProcessedWebsite }) {
   const [isExpanded, setIsExpanded] = useState(false);
 
   return (
-    <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden transition-all duration-200">
+    <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden">
       <div
-        className="p-6 cursor-pointer flex items-center justify-between"
+        className="p-4 cursor-pointer flex items-center justify-between hover:bg-gray-50 dark:hover:bg-gray-700"
         onClick={() => setIsExpanded(!isExpanded)}
       >
         <div className="flex items-center space-x-4">
-          <div
-            className={clsx(
-              "w-3 h-3 rounded-full",
-              website.status === "up" ? "bg-green-500" : "bg-red-500"
-            )}
-          />
+          <StatusCircle status={website.status} />
           <div>
-            <h3 className="text-lg font-semibold dark:text-white">
-              {website.name}
+            <h3 className="font-semibold text-gray-900 dark:text-white">
+              {website.url}
             </h3>
-            <div className="flex items-center text-gray-600 dark:text-gray-400">
-              <Globe className="w-4 h-4 mr-1" />
-              <span className="text-sm">{website.url}</span>
-            </div>
           </div>
         </div>
-        {isExpanded ? (
-          <ChevronUp className="w-5 h-5 text-gray-500 dark:text-gray-400" />
-        ) : (
-          <ChevronDown className="w-5 h-5 text-gray-500 dark:text-gray-400" />
-        )}
+        <div className="flex items-center space-x-4">
+          <span className="text-sm text-gray-600 dark:text-gray-300">
+            {website.uptimePercentage.toFixed(1)}% uptime
+          </span>
+          {isExpanded ? (
+            <ChevronUp className="w-5 h-5 text-gray-400 dark:text-gray-500" />
+          ) : (
+            <ChevronDown className="w-5 h-5 text-gray-400 dark:text-gray-500" />
+          )}
+        </div>
       </div>
 
       {isExpanded && (
-        <div className="px-6 pb-6">
-          <div className="border-t dark:border-gray-700 pt-4">
-            <h4 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
-              Last 30 Minutes Uptime
-            </h4>
-            <div className="flex space-x-1">
-              {website.uptimeHistory.map((status, index) => (
-                <div
-                  key={index}
-                  className={clsx(
-                    "flex-1 h-8 rounded",
-                    status === "up" ? "bg-green-500" : "bg-red-500"
-                  )}
-                  title={`${status === "up" ? "Operational" : "Down"}`}
-                />
-              ))}
-            </div>
+        <div className="px-4 pb-4 border-t border-gray-100 dark:border-gray-700">
+          <div className="mt-3">
+            <p className="text-sm text-gray-600 dark:text-gray-300 mb-1">
+              Last 30 minutes status:
+            </p>
+            <UptimeTicks ticks={website.uptimeTicks} />
           </div>
+          <p className="text-xs text-gray-500 dark:text-gray-400 mt-2">
+            Last checked: {website.lastChecked}
+          </p>
         </div>
       )}
     </div>
   );
-};
+}
