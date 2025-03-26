@@ -24,7 +24,7 @@ app.post(
       website: website,
       message: "created website instance",
     });
-  }
+  },
 );
 
 app.post("/api/v1/website/status", authMiddleware, async (req, res) => {
