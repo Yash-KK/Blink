@@ -7,6 +7,7 @@ import {
   Server,
   ArrowRight,
 } from "lucide-react";
+import Link from "next/link";
 
 function App() {
   return (
@@ -24,7 +25,7 @@ function App() {
             </p>
             <div className="flex justify-center space-x-4">
               <button className="bg-blue-600 hover:bg-blue-700 px-6 py-3 rounded-lg flex items-center space-x-2 transition-colors">
-                <span>Start Monitoring</span>
+                <Link href="/dashboard">Start Monitoring</Link>
                 <ArrowRight className="w-4 h-4" />
               </button>
               <button className="border border-gray-700 hover:border-gray-600 px-6 py-3 rounded-lg transition-colors">

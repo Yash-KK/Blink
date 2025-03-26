@@ -27,7 +27,7 @@ app.post(
   }
 );
 
-app.post("/api/v1/website/status", async (req, res) => {
+app.post("/api/v1/website/status", authMiddleware, async (req, res) => {
   const websiteId = req.query.websiteId as string;
   const userId = req.userId as string;
   const data = await prisma.website.findFirst({
@@ -42,7 +42,7 @@ app.post("/api/v1/website/status", async (req, res) => {
   res.json(data);
 });
 
-app.get("/api/v1/websites", async (req, res) => {
+app.get("/api/v1/websites", authMiddleware, async (req, res) => {
   const userId = req.userId as string;
   const websites = await prisma.website.findMany({
     where: {
