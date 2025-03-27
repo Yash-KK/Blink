@@ -19,12 +19,17 @@ const useWebsites = () => {
 
   const refreshWebsites = async () => {
     const token = await getToken();
-    const response = await axios.get("http://localhost:8081/api/v1/websites", {
-      headers: {
-        Authorization: token,
-      },
-    });
-    setWebsites(response.data.websites);
+    try{
+      const response = await axios.get("http://localhost:8081/api/v1/websites", {
+        headers: {
+          Authorization: token,
+        },
+      });
+      setWebsites(response.data.websites);
+  
+    } catch {
+      console.log('error')
+    }
   };
 
   useEffect(() => {
