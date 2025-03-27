@@ -1,6 +1,6 @@
 "use client";
 import React, { useState, useMemo } from "react";
-import { Globe, Plus, Moon, Sun } from "lucide-react";
+import { MonitorUp, Plus } from "lucide-react";
 import axios from "axios";
 import { RedirectToSignIn, useAuth } from "@clerk/nextjs";
 import useWebsites from "@/hooks/useWebsites";
@@ -104,44 +104,40 @@ function Dashboard() {
 
   // Toggle dark mode
   React.useEffect(() => {
-    if (isDarkMode) {
-      document.documentElement.classList.add("dark");
-    } else {
-      document.documentElement.classList.remove("dark");
-    }
-  }, [isDarkMode]);
+    document.documentElement.classList.add("dark");
+  }, []);
 
   if (userId == undefined) {
     return <RedirectToSignIn />;
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors duration-200">
+    <div className="min-h-screen  bg-gradient-to-br from-gray-900 to-gray-950 transition-colors duration-200">
       <div className="max-w-4xl mx-auto py-8 px-4">
         <div className="flex items-center justify-between mb-8">
           <div className="flex items-center space-x-2">
-            <Globe className="w-8 h-8 text-blue-600" />
+            <MonitorUp className="w-8 h-8 text-red-300" />
             <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
               Uptime Monitor
             </h1>
           </div>
           <div className="flex items-center space-x-4">
             <button
-              onClick={() => setIsDarkMode(!isDarkMode)}
-              className="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700"
-            >
-              {isDarkMode ? (
-                <Sun className="w-5 h-5 text-gray-600 dark:text-gray-300" />
-              ) : (
-                <Moon className="w-5 h-5 text-gray-600 dark:text-gray-300" />
-              )}
-            </button>
-            <button
               onClick={() => setIsModalOpen(true)}
-              className="flex items-center space-x-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors duration-200"
+              className="group relative overflow-hidden rounded-lg shadow-lg transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-xl 
+  dark:bg-white dark:text-black bg-black text-white"
             >
-              <Plus className="w-4 h-4" />
-              <span>Add Website</span>
+              <div className="absolute inset-0 bg-black/5 transition-opacity group-hover:bg-black/10 dark:bg-white/5 dark:group-hover:bg-white/10"></div>
+
+              <div className="relative z-10 flex items-center justify-center space-x-3 px-4 py-2">
+                <Plus
+                  className="w-5 h-5 transition-transform duration-300 group-hover:rotate-180 
+    dark:text-black text-white"
+                />
+                <span className="font-semibold text-lg tracking-wide">
+                  Add Website
+                </span>
+              </div>
             </button>
           </div>
         </div>

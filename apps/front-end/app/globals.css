@@ -1,6 +1,15 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
+
+@layer base {
+::-webkit-scrollbar{
+@apply w-0.5 bg-transparent;
+}
+::-webkit-scrollbar-thumb{
+@apply rounded-full bg-gray-400
+}}
+
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
