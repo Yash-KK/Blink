@@ -19,16 +19,18 @@ const useWebsites = () => {
 
   const refreshWebsites = async () => {
     const token = await getToken();
-    try{
-      const response = await axios.get("http://localhost:8081/api/v1/websites", {
-        headers: {
-          Authorization: token,
-        },
-      });
+    try {
+      const response = await axios.get(
+        `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/api/v1/websites`,
+        {
+          headers: {
+            Authorization: token,
+          },
+        }
+      );
       setWebsites(response.data.websites);
-  
     } catch {
-      console.log('error')
+      console.log("error");
     }
   };
 

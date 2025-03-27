@@ -21,7 +21,7 @@ Bun.serve({
     }
     return new Response("Upgrade failed", { status: 500 });
   },
-  port: 8082,
+  port: process.env.WS_PORT,
   websocket: {
     async message(ws: ServerWebSocket<unknown>, message: string) {
       const data: IncomingMessage = JSON.parse(message);

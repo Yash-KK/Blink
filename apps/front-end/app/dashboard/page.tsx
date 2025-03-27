@@ -23,7 +23,7 @@ function Dashboard() {
     setIsModalOpen(false);
     axios
       .post(
-        `http://localhost:8081/api/v1/website`,
+        `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/api/v1/website`,
         {
           url,
         },

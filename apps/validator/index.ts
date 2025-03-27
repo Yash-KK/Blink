@@ -16,9 +16,9 @@ let validatorId: string | null = null;
 
 async function main() {
   const keypair = Keypair.fromSecretKey(
-    Uint8Array.from(JSON.parse(process.env.PRIVATE_KEY!)),
+    Uint8Array.from(JSON.parse(process.env.PRIVATE_KEY!))
   );
-  const ws = new WebSocket("ws://localhost:8082");
+  const ws = new WebSocket(`${process.env.BACKEND_WS_URL}`);
 
   ws.onmessage = async (event) => {
     const data: OutgoingMessage = JSON.parse(event.data);
@@ -37,7 +37,7 @@ async function main() {
     };
     const signedMessage = await signMessage(
       `Signed message for ${callbackId}, ${keypair.publicKey}`,
-      keypair,
+      keypair
     );
 
     ws.send(
@@ -49,7 +49,7 @@ async function main() {
           publicKey: keypair.publicKey,
           signedMessage,
         },
-      }),
+      })
     );
   };
 }
@@ -57,7 +57,7 @@ async function main() {
 async function validateHandler(
   ws: WebSocket,
   { url, callbackId, websiteId }: ValidateOutgoingMessage,
-  keypair: Keypair,
+  keypair: Keypair
 ) {
   console.log(`Validate ${url}`);
   const startTime = Date.now();
@@ -82,7 +82,7 @@ async function validateHandler(
           validatorId,
           signedMessage: signature,
         },
-      }),
+      })
     );
   } catch (error) {
     ws.send(
@@ -96,7 +96,7 @@ async function validateHandler(
           validatorId,
           signedMessage: signature,
         },
-      }),
+      })
     );
     console.error(error);
   }
