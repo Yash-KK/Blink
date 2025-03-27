@@ -4,7 +4,8 @@
   "type": "module",
   "private": true,
   "scripts": {
-    "dev": "bun --hot run index.ts"
+    "dev": "bun --hot run index.ts",
+    "build": "bun build index.ts --outdir dist --target bun"
   },
   "devDependencies": {
     "@repo/db": "*",
