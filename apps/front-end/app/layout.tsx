@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { ClerkProvider } from "@clerk/nextjs";
-import { ThemeProvider } from "@/components/theme-provider";
 
 import "./globals.css";
 import AppBar from "@/components/AppBar";
@@ -30,10 +29,10 @@ export default function RootLayout({
     <html lang="en">
       <ClerkProvider afterSignOutUrl="/">
         <body
-          className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+          className={`${geistSans.variable} ${geistMono.variable} antialiased overflow-hidden`}
         >
           <AppBar />
-          {children}
+          <div className="overflow-auto h-screen">{children}</div>
         </body>
       </ClerkProvider>
     </html>
