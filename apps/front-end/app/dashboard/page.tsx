@@ -2,16 +2,16 @@
 import React, { useState, useMemo } from "react";
 import { Globe, Plus, Moon, Sun } from "lucide-react";
 import axios from "axios";
-import { useAuth } from "@clerk/nextjs";
+import { RedirectToSignIn, useAuth } from "@clerk/nextjs";
 import useWebsites from "@/hooks/useWebsites";
 import WebsiteCard, { UptimeStatus } from "@/components/WebsiteCard";
 import CreateWebsiteModal from "@/components/CreateWebsiteModal";
 
 function Dashboard() {
+  const { getToken, userId } = useAuth();
   const [isDarkMode, setIsDarkMode] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { websites, refreshWebsites } = useWebsites();
-  const { getToken } = useAuth();
 
   const handleCloseModal = async (url: string | null) => {
     if (url === null || url.trim() === "") {
@@ -110,6 +110,10 @@ function Dashboard() {
       document.documentElement.classList.remove("dark");
     }
   }, [isDarkMode]);
+
+  if (userId == undefined) {
+    return <RedirectToSignIn />;
+  }
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors duration-200">
