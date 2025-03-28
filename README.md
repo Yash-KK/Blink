@@ -1,84 +1,64 @@
-# Turborepo starter
+# 🚀 Blink – Decentralized Uptime Monitoring Platform
 
-This Turborepo starter is maintained by the Turborepo core team.
+**Blink** is a decentralized uptime monitoring platform designed to track website availability in real time. It uses a modular architecture powered by **TurboRepo** with four apps, ensuring efficiency, scalability, and flexibility. Validators are compensated with **Solana wallets** at the end of each month.
 
-## Using this example
+---
 
-Run the following command:
+## 🛠️ Architecture
 
-```sh
-npx create-turbo@latest
-```
+Blink consists of **four apps**:
+1. **Front-end** – Built with **Next.js**, providing a sleek and responsive UI for users to monitor website uptime.
+2. **API** – An **HTTP Bun server** that handles requests from the front-end and interacts with the Hub and Validators.
+3. **Hub** – A **WebSocket Bun server** responsible for distributing website URLs to Validators every minute. It listens for validation responses and triggers callback functions on completion.
+4. **Validator** – A **WebSocket Bun server** that performs the actual website validation by sending HTTP requests and returning the status to the Hub.
 
-## What's inside?
+---
 
-This Turborepo includes the following packages/apps:
+## 🔗 Flow Overview
 
-### Apps and Packages
+1. **Website Submission:** Users submit websites to monitor through the front-end.
+2. **Distribution:** The API sends the list of websites to the Hub.
+3. **Callback-based Validation:** 
+    - The Hub assigns a **unique request ID** to each website request and sends it to the Validators over a WebSocket connection.
+    - When the Validator receives the request, it performs the uptime check by sending an HTTP request to the website.
+    - Once the validation is complete, the Validator sends the response back to the Hub, including the original request ID.
+    - The Hub uses the request ID to **trigger the corresponding callback function**, ensuring that the correct website status is updated.
+4. **Real-time Updates:** The Hub sends the validation results back to the front-end, updating the website status in real-time.
+5. **Payment:** Validators are compensated with **Solana wallet payments** at the end of each month.
 
-- `docs`: a [Next.js](https://nextjs.org/) app
-- `web`: another [Next.js](https://nextjs.org/) app
-- `@repo/ui`: a stub React component library shared by both `web` and `docs` applications
-- `@repo/eslint-config`: `eslint` configurations (includes `eslint-config-next` and `eslint-config-prettier`)
-- `@repo/typescript-config`: `tsconfig.json`s used throughout the monorepo
+---
 
-Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
+## ⚙️ Tech Stack
 
-### Utilities
+- **TurboRepo** – Monorepo management.
+- **Next.js** – Front-end app with a modern UI.
+- **Bun** – For the API, Hub, and Validator servers.
+- **WebSockets** – Real-time communication between the Hub and Validators.
+- **Solana Wallets** – For decentralized validator payments.
 
-This Turborepo has some additional tools already setup for you:
+---
 
-- [TypeScript](https://www.typescriptlang.org/) for static type checking
-- [ESLint](https://eslint.org/) for code linting
-- [Prettier](https://prettier.io) for code formatting
 
-### Build
+## ⚙️ Callback-based Architecture Explained
 
-To build all apps and packages, run the following command:
+In this architecture, a **WebSocket connection** exists between the **Hub** and the **Validator**. When the Hub sends a request, it specifies a **callback function** that should be triggered upon receiving the corresponding response.
 
-```
-cd my-turborepo
-pnpm build
-```
+### 🛠️ How It Works:
+- The Hub maintains a **Global Callback List**, which tracks all pending requests.
+- Each request is assigned a **unique identifier** (e.g., `requestID`) and is stored in the callback list as a key-value pair:
 
-### Develop
+- When the Validator sends a response, the Hub looks for the corresponding `requestID` in the callback list.
+- The matching callback function is executed, and the `requestID` is removed from the list to **prevent memory leaks or redundant calls**.
 
-To develop all apps and packages, run the following command:
+### ✅ Benefits:
+- Ensures that each response is mapped to its original request.
+- Enables **asynchronous, non-blocking communication** between the Hub and Validator.
+- Prevents stale or redundant callbacks by cleaning up the callback list.
 
-```
-cd my-turborepo
-pnpm dev
-```
+---
 
-### Remote Caching
+![image](https://github.com/user-attachments/assets/ff139aea-5a8c-4f0a-b13f-db531214aa55)
 
-> [!TIP]
-> Vercel Remote Cache is free for all plans. Get started today at [vercel.com](https://vercel.com/signup?/signup?utm_source=remote-cache-sdk&utm_campaign=free_remote_cache).
+---
 
-Turborepo can use a technique known as [Remote Caching](https://turbo.build/repo/docs/core-concepts/remote-caching) to share cache artifacts across machines, enabling you to share build caches with your team and CI/CD pipelines.
-
-By default, Turborepo will cache locally. To enable Remote Caching you will need an account with Vercel. If you don't have an account you can [create one](https://vercel.com/signup?utm_source=turborepo-examples), then enter the following commands:
-
-```
-cd my-turborepo
-npx turbo login
-```
-
-This will authenticate the Turborepo CLI with your [Vercel account](https://vercel.com/docs/concepts/personal-accounts/overview).
-
-Next, you can link your Turborepo to your Remote Cache by running the following command from the root of your Turborepo:
-
-```
-npx turbo link
-```
-
-## Useful Links
-
-Learn more about the power of Turborepo:
-
-- [Tasks](https://turbo.build/repo/docs/core-concepts/monorepos/running-tasks)
-- [Caching](https://turbo.build/repo/docs/core-concepts/caching)
-- [Remote Caching](https://turbo.build/repo/docs/core-concepts/remote-caching)
-- [Filtering](https://turbo.build/repo/docs/core-concepts/monorepos/filtering)
-- [Configuration Options](https://turbo.build/repo/docs/reference/configuration)
-- [CLI Usage](https://turbo.build/repo/docs/reference/command-line-reference)
+https://github.com/user-attachments/assets/1291bc0a-aee4-4d09-85c9-48a912fed91d
